@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   TextEditingController searchController = TextEditingController();
   final pokemonsList = <PokemonModel>[].obs;
+  final _pokemonsList = <PokemonModel>[].obs;
   final PokemonsViewModel _pokemonsViewModel;
+  final clearButton = false.obs;
 
   HomeController({
     required PokemonsViewModel pokemonsViewModel,
@@ -24,9 +26,29 @@ class HomeController extends GetxController {
       var response = await _pokemonsViewModel.getPokemons();
       if (response != []) {
         pokemonsList.assignAll(response);
+        _pokemonsList.assignAll(response);
       }
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  void filterPokemon(String description) {
+    if (description.isNotEmpty) {
+      clearButton(true);
+      var newPokemonList = _pokemonsList.where((value) {
+        return value.name.toLowerCase().contains(description.toLowerCase());
+      });
+      pokemonsList.assignAll(newPokemonList);
+    } else {
+      clearButton(false);
+      pokemonsList.assignAll(_pokemonsList);
+    }
+  }
+
+  void clearSearch() {
+    searchController.clear();
+    pokemonsList.assignAll(_pokemonsList);
+    clearButton(false);
   }
 }
