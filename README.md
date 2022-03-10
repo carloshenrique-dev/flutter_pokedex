@@ -18,7 +18,7 @@ Pokedex Features:
 - search Pokemon by their names
 - see details from the selected Pokemon
 
-Pokemon’s public API used, [pokeapi](<https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json>).
+Pokemon’s public API used, [API](<https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json>).
 
 Instructions to run the project: 
 
