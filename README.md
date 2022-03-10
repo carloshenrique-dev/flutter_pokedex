@@ -1,16 +1,28 @@
-# flutter_pokedex
+# Pokedex
+This project is a challenge developed in Flutter. Here we have a famous Pokedex of Pokemon!
+And you can search your favourite pokemon, and see more details about him in this APP.
 
-A new Flutter project.
+Stack: 
+- Flutter
+- MVVM
+- GetX
 
-## Getting Started
+Packages:
+- get: ^4.6.1
+- dio: ^4.0.4
+- google_fonts: ^2.3.1
 
-This project is a starting point for a Flutter application.
+Pokedex Features:
 
-A few resources to get you started if this is your first Flutter project:
+- Pokemons list
+- search Pokemon by their names
+- see details from the selected Pokemon
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Pokemon’s public API used, [pokeapi](<https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json>).
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Instructions to run the project: 
+
+Clone this repository for your PC, and use your favourite IDE, get the Packages 
+when requested to you, and that's it
+
+Please contact me if you need help in: c.tarabal25@gmail.com.
