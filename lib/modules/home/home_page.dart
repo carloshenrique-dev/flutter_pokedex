@@ -19,6 +19,7 @@ class HomePage extends GetView<HomeController> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.05),
             child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               child: SizedBox(
                 width: Get.width,
                 height: Get.height,
@@ -86,7 +87,10 @@ class HomePage extends GetView<HomeController> {
                                 return InkWell(
                                   onTap: () => Get.toNamed(
                                     '/pokemondetails',
-                                    arguments: pokemon,
+                                    arguments: [
+                                      pokemon,
+                                      controller.pokemonsList
+                                    ],
                                   ),
                                   child: PokemonCardWidget(
                                     pokemon: pokemon,

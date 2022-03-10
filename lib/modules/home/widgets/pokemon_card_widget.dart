@@ -45,7 +45,7 @@ class PokemonCardWidget extends StatelessWidget {
           ),
           Text(
             pokemon.name.capitalizeFirst!,
-            style: AppTextStyles.productDetailsWhite,
+            style: AppTextStyles.pokemonCardTitle,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           ),

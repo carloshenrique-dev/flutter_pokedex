@@ -14,10 +14,6 @@ class PokemonsRepositoryImpl implements PokemonsRepository {
   @override
   Future<List<PokemonModel>> getPokemons() async {
     try {
-      //pokeapi
-      /*var response = await _apiService.get(
-          path: 'https://pokeapi.co/api/v2/pokemon?limit=151%27');*/
-      //pokedexapi
       var response = await _apiService.get(
           path:
               'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json');

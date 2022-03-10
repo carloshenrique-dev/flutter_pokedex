@@ -21,6 +21,22 @@ class PokemonPhotoWidget extends StatelessWidget {
           width: Get.width * 0.85,
           height: Get.height * 0.25,
           fit: BoxFit.cover,
+          loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                  color: AppColors.white,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

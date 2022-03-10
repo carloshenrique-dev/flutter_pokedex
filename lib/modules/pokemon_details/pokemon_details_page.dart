@@ -1,12 +1,14 @@
 import 'dart:ui';
-
 import 'package:flutter_pokedex/application/themes/styles/app_colors.dart';
 import 'package:flutter_pokedex/application/themes/styles/app_text_styles.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import './pokemon_details_controller.dart';
 import 'widgets/pokemon_details_card_widget.dart';
+import 'widgets/pokemon_evolutions_card_widget.dart';
+import 'widgets/pokemon_name_widget.dart';
 import 'widgets/pokemon_photo_widget.dart';
+import 'widgets/pokemon_type_card_widget.dart';
 
 class PokemonDetailsPage extends GetView<PokemonDetailsController> {
   const PokemonDetailsPage({Key? key}) : super(key: key);
@@ -34,34 +36,23 @@ class PokemonDetailsPage extends GetView<PokemonDetailsController> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: Get.height * .035,
+                  height: Get.height * .012,
                 ),
                 PokemonPhotoWidget(
                   urlImage: controller.pokemonModel!.image,
                 ),
                 SizedBox(
-                  height: Get.height * .035,
+                  height: Get.height * .012,
                 ),
-                Container(
-                  height: Get.height * 0.06,
-                  width: Get.width * 0.5,
-                  decoration: BoxDecoration(
-                    color: controller.pokemonModel!.baseColor!,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
+                PokemonNameWidget(
+                  color: controller.pokemonModel!.baseColor!,
+                  title:
                       '#${controller.pokemonModel!.num} ${controller.pokemonModel!.name}',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.textBoldPokemonDetails,
-                    ),
-                  ),
                 ),
                 SizedBox(
-                  height: Get.height * .035,
+                  height: Get.height * .015,
                 ),
                 Expanded(
                   child: Card(
@@ -75,95 +66,54 @@ class PokemonDetailsPage extends GetView<PokemonDetailsController> {
                     )),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Types',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.homeTitleWhite,
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: Get.width * .745,
-                            height: Get.height * .06,
-                            child: Text(
-                              'a',
-                              style: AppTextStyles.homeTitleWhite,
-                            )
-                            /*ListView.separated(
-                              separatorBuilder: (context, _) {
-                                return const VerticalDivider();
-                              },
-                              itemCount: controller.pokemonModel!.type.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                var type = controller.pokemonModel!.type[index];
-                                return Container(
-                                  height: Get.height * 0.06,
-                                  width: Get.width * 0.35,
-                                  decoration: BoxDecoration(
-                                    color: controller.pokemonModel!.baseColor!,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      type,
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          AppTextStyles.textBoldPokemonDetails,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                );
-                              },
-                            )*/
-                            ,
-                          ),
+                          style: AppTextStyles.pokemonDetailsTitle,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: generateTypes(),
+                        ),
+                        Text(
+                          'About ${controller.pokemonModel!.name}',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.pokemonDetailsTitle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             PokemonDetailsCardWidget(
-                              title: 'Id',
-                              subTitle: '${controller.pokemonModel!.id}',
-                              color: controller.pokemonModel!.baseColor!,
+                              title: 'Number',
+                              subTitle: '#${controller.pokemonModel!.num}',
+                              color: AppColors.dark,
                             ),
                             PokemonDetailsCardWidget(
-                                title: 'Peso',
+                                title: 'Weight',
                                 subTitle: controller.pokemonModel!.weight,
-                                color: controller.pokemonModel!.baseColor!),
+                                color: AppColors.dark),
                             PokemonDetailsCardWidget(
-                              title: 'Altura',
+                              title: 'Height',
                               subTitle: controller.pokemonModel!.height,
-                              color: controller.pokemonModel!.baseColor!,
+                              color: AppColors.dark,
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: Get.width * .05),
-                          child: const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Recomendações',
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
+                        Text(
+                          'Evolutions',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.pokemonDetailsTitle,
                         ),
-                        /*RecomendationsCardWidget(
-                          icon: FontAwesomeIcons.cookieBite,
-                          title: 'Alimentacao',
-                          color: AppColors.lightPink,
-                          subtitle: controller
-                              .petModel.favoriteFood!.capitalizeFirst!,
-                        ),
-                        const RecomendationsCardWidget(
-                          icon: Icons.pets,
-                          title: 'Passeio',
-                          color: AppColors.backgroundSplash,
-                          subtitle: 'Sempre lembrar do meu',
-                        ),*/
+                        Obx(() {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ...generatePreviousEvolution(),
+                              ...generateNextEvolution(),
+                            ],
+                          );
+                        })
                       ],
                     ),
                   ),
@@ -174,5 +124,54 @@ class PokemonDetailsPage extends GetView<PokemonDetailsController> {
         ),
       ),
     );
+  }
+
+  List<Widget> generateTypes() {
+    return List.generate(
+      controller.pokemonModel!.type.length,
+      (index) {
+        var type = controller.pokemonModel!.type[index];
+        return PokemonTypeCardWidget(
+          color: controller.pokemonModel!.getColor(type)!,
+          type: type,
+        );
+      },
+    );
+  }
+
+  generatePreviousEvolution() {
+    if (controller.pokemonModel?.previousEvolution != null) {
+      return List.generate(
+        controller.pokemonModel!.previousEvolution.length,
+        (index) {
+          var type = controller.pokemonModel!.previousEvolution[index];
+          if (type['name'] != null) {
+            return PokemonEvolutionsCardWidget(
+              name: type['name'],
+              urlImage: controller.getEvolutionImage(type['num']),
+            );
+          }
+        },
+      );
+    }
+    return [];
+  }
+
+  generateNextEvolution() {
+    if (controller.pokemonModel?.nextEvolution != null) {
+      return List.generate(
+        controller.pokemonModel!.nextEvolution.length,
+        (index) {
+          var type = controller.pokemonModel!.nextEvolution[index];
+          if (type['name'] != null) {
+            return PokemonEvolutionsCardWidget(
+              name: type['name'],
+              urlImage: controller.getEvolutionImage(type['num']),
+            );
+          }
+        },
+      );
+    }
+    return [];
   }
 }

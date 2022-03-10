@@ -16,7 +16,7 @@ class PokemonDetailsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height * 0.13,
+      height: Get.height * 0.11,
       width: Get.width * 0.26,
       decoration:
           BoxDecoration(color: color, borderRadius: BorderRadius.circular(15)),

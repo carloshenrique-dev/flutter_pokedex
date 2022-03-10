@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class PokemonModel {
@@ -7,7 +8,8 @@ class PokemonModel {
   final String num;
   final String weight;
   final String height;
-  final List<String> nextEvolution;
+  final List nextEvolution;
+  final List previousEvolution;
 
   factory PokemonModel.fromMap(Map<String, dynamic> json) {
     return PokemonModel(
@@ -19,17 +21,15 @@ class PokemonModel {
             (e) => e as String,
           )
           .toList(),
-      nextEvolution: (json['type'] as List<dynamic>)
-          .map(
-            (e) => e as String,
-          )
-          .toList(),
+      nextEvolution: List.from(json['next_evolution'] ?? []),
+      previousEvolution: List.from(json['prev_evolution'] ?? []),
       weight: json['weight'],
       height: json['height'],
     );
   }
 
-  Color? get baseColor => _color(type: type[0]);
+  Color? get baseColor => color(type: type[0]);
+  Color? getColor(String type) => color(type: type);
   String get image =>
       'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$num.png';
 
@@ -41,9 +41,10 @@ class PokemonModel {
     required this.weight,
     required this.height,
     required this.nextEvolution,
+    required this.previousEvolution,
   });
 
-  static Color? _color({required String type}) {
+  static Color? color({required String type}) {
     switch (type) {
       case 'Normal':
         return Colors.brown[400];
@@ -85,4 +86,22 @@ class PokemonModel {
         return Colors.grey;
     }
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'type': type,
+      'id': id,
+      'num': num,
+      'weight': weight,
+      'height': height,
+      'nextEvolution': nextEvolution,
+      'previousEvolution': previousEvolution,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PokemonModel.fromJson(String source) =>
+      PokemonModel.fromMap(json.decode(source));
 }
