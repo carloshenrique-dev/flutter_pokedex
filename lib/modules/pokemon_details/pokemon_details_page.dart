@@ -15,111 +15,121 @@ class PokemonDetailsPage extends GetView<PokemonDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment.topCenter,
-              image: NetworkImage(
-                controller.pokemonModel!.image,
-              ),
-              fit: BoxFit.none,
-              filterQuality: FilterQuality.high,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppColors.background,
+        centerTitle: true,
+        title: Text(
+          controller.pokemonModel!.name,
+          style: const TextStyle(fontSize: 24),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment.topCenter,
+            image: NetworkImage(
+              controller.pokemonModel!.image,
             ),
+            fit: BoxFit.none,
+            filterQuality: FilterQuality.high,
           ),
-          child: BackdropFilter(
-            blendMode: BlendMode.srcOver,
-            filter: ImageFilter.blur(
-              sigmaX: 5,
-              sigmaY: 5,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: Get.height * .012,
-                ),
-                PokemonPhotoWidget(
-                  urlImage: controller.pokemonModel!.image,
-                ),
-                SizedBox(
-                  height: Get.height * .012,
-                ),
-                PokemonNameWidget(
-                  color: controller.pokemonModel!.baseColor!,
-                  title:
-                      '#${controller.pokemonModel!.num} ${controller.pokemonModel!.name}',
-                ),
-                SizedBox(
-                  height: Get.height * .015,
-                ),
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    elevation: 7,
-                    color: AppColors.background,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    )),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Types',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.pokemonDetailsTitle,
-                        ),
-                        Row(
+        ),
+        child: BackdropFilter(
+          blendMode: BlendMode.srcOver,
+          filter: ImageFilter.blur(
+            sigmaX: 5,
+            sigmaY: 5,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: Get.height * .012,
+              ),
+              PokemonPhotoWidget(
+                urlImage: controller.pokemonModel!.image,
+              ),
+              SizedBox(
+                height: Get.height * .012,
+              ),
+              PokemonNameWidget(
+                color: controller.pokemonModel!.baseColor!,
+                title:
+                    '#${controller.pokemonModel!.num} ${controller.pokemonModel!.name}',
+              ),
+              SizedBox(
+                height: Get.height * .015,
+              ),
+              Expanded(
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 7,
+                  color: AppColors.background,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Types',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.pokemonDetailsTitle,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: generateTypes(),
+                      ),
+                      Text(
+                        'About ${controller.pokemonModel!.name}',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.pokemonDetailsTitle,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          PokemonDetailsCardWidget(
+                            title: 'Number',
+                            subTitle: '#${controller.pokemonModel!.num}',
+                            color: AppColors.dark,
+                          ),
+                          PokemonDetailsCardWidget(
+                              title: 'Weight',
+                              subTitle: controller.pokemonModel!.weight,
+                              color: AppColors.dark),
+                          PokemonDetailsCardWidget(
+                            title: 'Height',
+                            subTitle: controller.pokemonModel!.height,
+                            color: AppColors.dark,
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'Evolutions',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.pokemonDetailsTitle,
+                      ),
+                      Obx(() {
+                        return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: generateTypes(),
-                        ),
-                        Text(
-                          'About ${controller.pokemonModel!.name}',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.pokemonDetailsTitle,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            PokemonDetailsCardWidget(
-                              title: 'Number',
-                              subTitle: '#${controller.pokemonModel!.num}',
-                              color: AppColors.dark,
-                            ),
-                            PokemonDetailsCardWidget(
-                                title: 'Weight',
-                                subTitle: controller.pokemonModel!.weight,
-                                color: AppColors.dark),
-                            PokemonDetailsCardWidget(
-                              title: 'Height',
-                              subTitle: controller.pokemonModel!.height,
-                              color: AppColors.dark,
-                            ),
+                            ...generatePreviousEvolution(),
+                            ...generateNextEvolution(),
                           ],
-                        ),
-                        Text(
-                          'Evolutions',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.pokemonDetailsTitle,
-                        ),
-                        Obx(() {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ...generatePreviousEvolution(),
-                              ...generateNextEvolution(),
-                            ],
-                          );
-                        })
-                      ],
-                    ),
+                        );
+                      }),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

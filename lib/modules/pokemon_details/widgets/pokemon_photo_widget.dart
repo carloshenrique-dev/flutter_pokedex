@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/application/themes/styles/app_colors.dart';
-import 'package:get/get.dart';
 
 class PokemonPhotoWidget extends StatelessWidget {
   final String urlImage;
@@ -18,8 +17,8 @@ class PokemonPhotoWidget extends StatelessWidget {
         backgroundColor: AppColors.grayColor,
         child: Image.network(
           urlImage,
-          width: Get.width * 0.85,
-          height: Get.height * 0.25,
+          width: 100,
+          height: 100,
           fit: BoxFit.cover,
           loadingBuilder: (BuildContext context, Widget child,
               ImageChunkEvent? loadingProgress) {

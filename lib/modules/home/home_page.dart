@@ -25,18 +25,8 @@ class HomePage extends GetView<HomeController> {
                 height: Get.height,
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        alignment: Alignment.centerLeft,
-                        onPressed: () => Get.back(),
-                        icon: const Icon(
-                          Icons.sort,
-                          size: 30,
-                          color: AppColors.whiteDefault,
-                        ),
-                      ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     const Align(
                       alignment: Alignment.centerLeft,
